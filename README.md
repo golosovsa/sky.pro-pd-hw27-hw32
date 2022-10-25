@@ -9,3 +9,4 @@
 ## Project status
 
 -    [x] Initial
+-    [x] Install and setup poetry
