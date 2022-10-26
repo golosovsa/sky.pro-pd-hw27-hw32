@@ -2,7 +2,7 @@ from django.db import models
 from django import forms
 
 
-class AdModel(models.Model):
+class Ad(models.Model):
     name = models.CharField(max_length=100)
     author = models.CharField(max_length=20)
     price = models.IntegerField()
@@ -11,5 +11,5 @@ class AdModel(models.Model):
     is_published = models.BooleanField(default=False)
 
 
-class CategoryModel(models.Model):
-    name = models.CharField(max_length=50)
+class Category(models.Model):
+    name = models.CharField(max_length=50, unique=True)

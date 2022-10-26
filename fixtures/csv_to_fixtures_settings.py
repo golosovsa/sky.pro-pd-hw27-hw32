@@ -1,5 +1,5 @@
 
 FIXTURES_AFFILIATIONS = {
-    "ads.csv": "ads.AdModel",
-    "categories.csv": "ads.CategoryModel",
+    "ads.csv": "ads.Ad",
+    "categories.csv": "ads.Category",
 }

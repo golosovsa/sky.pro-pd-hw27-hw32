@@ -8,7 +8,7 @@ from django.utils.decorators import method_decorator
 from django.core.exceptions import ValidationError
 from django.http import HttpResponseNotAllowed
 
-from .models import AdModel, CategoryModel
+from .models import Ad, Category
 
 
 @csrf_exempt
@@ -30,11 +30,11 @@ def choose_method(method_views: dict):
 
 @method_decorator(csrf_exempt, name='dispatch')
 class AdListView(ListView):
-    model = AdModel
+    model = Ad
 
     def get(self, *args, **kwargs):
         super().get(*args, *kwargs)
-        ads: list[AdModel] = self.get_queryset()
+        ads: list[Ad] = self.get_queryset()
         response = []
         for ad in ads:
             response.append({
@@ -49,11 +49,11 @@ class AdListView(ListView):
 
 @method_decorator(csrf_exempt, name='dispatch')
 class AdDetailView(DetailView):
-    model = AdModel
+    model = Ad
 
     def get(self, *args, **kwargs):
         super().get(*args, **kwargs)
-        ad: AdModel = self.get_object()
+        ad: Ad = self.get_object()
 
         return JsonResponse({
             "id": ad.pk,
@@ -68,13 +68,13 @@ class AdDetailView(DetailView):
 
 @method_decorator(csrf_exempt, name='dispatch')
 class AdCreateView(CreateView):
-    model = AdModel
+    model = Ad
     fields = ["name", "author", "price", "description", "address", "is_published"]
 
     def post(self, request, *args, **kwargs):
         ad_data = json.loads(request.body)
 
-        ad = AdModel()
+        ad = Ad()
         ad.name = ad_data.get("name")
         ad.author = ad_data.get("author")
         ad.price = ad_data.get("price")
@@ -102,11 +102,11 @@ class AdCreateView(CreateView):
 
 @method_decorator(csrf_exempt, name='dispatch')
 class CategoryListView(ListView):
-    model = CategoryModel
+    model = Category
 
     def get(self, *args, **kwargs):
         super().get(*args, *kwargs)
-        categories: list[CategoryModel] = self.get_queryset()
+        categories: list[Category] = self.get_queryset()
         response = []
         for category in categories:
             response.append({
@@ -119,11 +119,11 @@ class CategoryListView(ListView):
 
 @method_decorator(csrf_exempt, name='dispatch')
 class CategoryDetailView(DetailView):
-    model = CategoryModel
+    model = Category
 
     def get(self, *args, **kwargs):
         super().get(*args, **kwargs)
-        ad: CategoryModel = self.get_object()
+        ad: Category = self.get_object()
 
         return JsonResponse({
             "id": ad.pk,
@@ -133,13 +133,13 @@ class CategoryDetailView(DetailView):
 
 @method_decorator(csrf_exempt, name='dispatch')
 class CategoryCreateView(CreateView):
-    model = CategoryModel
+    model = Category
     fields = ["name"]
 
     def post(self, request, *args, **kwargs):
         category_data = json.loads(request.body)
 
-        category = CategoryModel()
+        category = Category()
         category.name = category_data.get("name")
 
         try:
