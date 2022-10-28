@@ -2,13 +2,13 @@ import json
 
 from django.http import JsonResponse
 from django.views.generic.list import ListView
-from django.views.generic import DetailView, CreateView, View
+from django.views.generic import DetailView, CreateView
 from django.views.decorators.csrf import csrf_exempt
 from django.utils.decorators import method_decorator
 from django.core.exceptions import ValidationError
 from django.http import HttpResponseNotAllowed
 
-from .models import Ad, Category
+from ads.models import Ad
 
 
 @csrf_exempt
@@ -84,8 +84,8 @@ class AdCreateView(CreateView):
 
         try:
             ad.full_clean()
-        except ValidationError:
-            return JsonResponse({"error": "invalid request"}, status=422)
+        except ValidationError as error:
+            return JsonResponse({"error": error.error_dict()}, status=422)
 
         ad.save()
 
@@ -97,59 +97,4 @@ class AdCreateView(CreateView):
             "description": ad.description,
             "address": ad.address,
             "is_published": ad.is_published,
-        })
-
-
-@method_decorator(csrf_exempt, name='dispatch')
-class CategoryListView(ListView):
-    model = Category
-
-    def get(self, *args, **kwargs):
-        super().get(*args, *kwargs)
-        categories: list[Category] = self.get_queryset()
-        response = []
-        for category in categories:
-            response.append({
-                "id": category.pk,
-                "name": category.name,
-            })
-
-        return JsonResponse(response, safe=False)
-
-
-@method_decorator(csrf_exempt, name='dispatch')
-class CategoryDetailView(DetailView):
-    model = Category
-
-    def get(self, *args, **kwargs):
-        super().get(*args, **kwargs)
-        ad: Category = self.get_object()
-
-        return JsonResponse({
-            "id": ad.pk,
-            "name": ad.name,
-        })
-
-
-@method_decorator(csrf_exempt, name='dispatch')
-class CategoryCreateView(CreateView):
-    model = Category
-    fields = ["name"]
-
-    def post(self, request, *args, **kwargs):
-        category_data = json.loads(request.body)
-
-        category = Category()
-        category.name = category_data.get("name")
-
-        try:
-            category.full_clean()
-        except ValidationError:
-            return JsonResponse({"error": "invalid request"}, status=422)
-
-        category.save()
-
-        return JsonResponse({
-            "id": category.pk,
-            "name": category.name,
         })

@@ -8,7 +8,7 @@
 
 ## Homework №28
 [cheat sheet 28.1](https://skyengpublic.notion.site/28-1-1a9f3c17c4764019ac5b142a698ce718)\
-[cheat sheet 28.1](https://skyengpublic.notion.site/28-2-341e53b4a6a54250a829453e01334499)\
+[cheat sheet 28.2](https://skyengpublic.notion.site/28-2-341e53b4a6a54250a829453e01334499)\
 [source](https://skyengpublic.notion.site/28-Postgres-relations-QuerySet-7a440f26dd914d67ab788093f5a158e3)
 
 ## Project devs settings
@@ -27,3 +27,8 @@
 - [x] Load fixtures
 - [x] Create views
 - [x] Test hw27 with Postman 
+- [x] PostgreSQL
+- [x] New models
+- [x] Django admin and verbal names
+- [x] Media root and pictures
+- 
