@@ -1,8 +1,8 @@
 
 FIXTURES_AFFILIATIONS = {
-    "category.csv": "ads.Category",
-    "location.csv": "ads.Location",
-    "user.csv": "ads.User",
+    "category.csv": "categories.Category",
+    "location.csv": "locations.Location",
+    "user.csv": "users.User",
     "ad.csv": "ads.Ad",
 }
 

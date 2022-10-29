@@ -45,6 +45,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     "hello",
     "categories",
+    "locations",
+    "users",
     "ads",
 ]
 
@@ -133,10 +135,36 @@ STATIC_URL = 'static/'
 # upload files
 #
 
-MEDIA_ROOT = "media/"
-MEDIA_URL = "/uploads/media/"
+MEDIA_ROOT = BASE_DIR / "media/"
+MEDIA_URL = "/media/"
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# paginate
+
+USERS_ON_PAGE = 10
+ADS_ON_PAGE = 10
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+            "level": "DEBUG",
+        },
+    },
+    'loggers': {
+        "": {
+            'handlers': ['console'],
+            'level': 'DEBUG',
+            "propagate": False,
+        },
+        "django.db": {
+            "level": "DEBUG",
+        }
+    },
+}

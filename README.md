@@ -30,5 +30,9 @@
 - [x] PostgreSQL
 - [x] New models
 - [x] Django admin and verbal names
-- [x] Media root and pictures
-- 
+- [x] Media rout and pictures
+- [x] CRUD for all
+- [x] Upload image
+- [x] Pagination
+- [x] Ordering
+- [x] Extra fields

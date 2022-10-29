@@ -5,6 +5,7 @@ from django.views.generic.list import ListView
 from django.views.generic import DetailView, CreateView, UpdateView, DeleteView
 from django.http import JsonResponse
 from django.core.exceptions import ValidationError
+from django.urls import reverse
 
 
 from categories.models import Category
@@ -13,7 +14,7 @@ from categories.models import Category
 @method_decorator(csrf_exempt, name='dispatch')
 class CategoryListView(ListView):
     model = Category
-    queryset = Category.objects.all()
+    queryset = Category.objects.order_by("name").all()
 
     def get(self,  request, *args, **kwargs):
         super().get(request, *args, **kwargs)
@@ -48,10 +49,17 @@ class CategoryUpdateView(UpdateView):
     model = Category
     fields = ["name", ]
 
-    def post(self, request, *args, **kwargs):
+    def patch(self, request, *args, **kwargs):
         super().post(request, *args, **kwargs)
-        category_data = json.loads(request.body)
-        self.object.name = category_data.get("name")
+        try:
+            category_data = json.loads(request.body)
+        except json.JSONDecodeError as error:
+            return JsonResponse({"error": str(error)}, status=422)
+
+        for field in self.fields:
+            if field not in category_data:
+                continue
+            setattr(self.object, field, category_data[field])
 
         try:
             self.object.full_clean()
@@ -65,14 +73,11 @@ class CategoryUpdateView(UpdateView):
             "name": self.object.name,
         })
 
-    def patch(self, request, *args, **kwargs):
-        return self.post(request, *args, **kwargs)
-
 
 @method_decorator(csrf_exempt, name='dispatch')
 class CategoryCreateView(CreateView):
     model = Category
-    fields = ["name"]
+    fields = ["name", ]
 
     def post(self, request, *args, **kwargs):
         category_data = json.loads(request.body)
@@ -85,11 +90,11 @@ class CategoryCreateView(CreateView):
             return JsonResponse({"error": error.messages}, status=422)
 
         category.save()
-
+        location_header = reverse("category-detail", kwargs={"pk": category.id})
         return JsonResponse({
             "id": category.id,
             "name": category.name,
-        })
+        }, status=201, headers={"Location": location_header})
 
 
 @method_decorator(csrf_exempt, name='dispatch')

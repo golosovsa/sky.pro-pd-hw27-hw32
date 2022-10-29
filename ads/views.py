@@ -2,99 +2,176 @@ import json
 
 from django.http import JsonResponse
 from django.views.generic.list import ListView
-from django.views.generic import DetailView, CreateView
+from django.views.generic import DetailView, CreateView, UpdateView, DeleteView
 from django.views.decorators.csrf import csrf_exempt
 from django.utils.decorators import method_decorator
 from django.core.exceptions import ValidationError
-from django.http import HttpResponseNotAllowed
+from django.core.paginator import Paginator
+from django.urls import reverse
 
+from zavito import settings
 from ads.models import Ad
-
-
-@csrf_exempt
-@method_decorator(csrf_exempt, name='dispatch')
-def hello(request):
-    return JsonResponse({"status": "ok"})
-
-
-def choose_method(method_views: dict):
-    @csrf_exempt
-    def generic_view(request):
-        method_view = method_views.get(request.method)
-        if not method_view:
-            return HttpResponseNotAllowed(list(method_view.keys()))
-        return method_view(request)
-
-    return generic_view
 
 
 @method_decorator(csrf_exempt, name='dispatch')
 class AdListView(ListView):
     model = Ad
+    queryset = Ad.objects.select_related("author").order_by("-price")
 
-    def get(self, *args, **kwargs):
-        super().get(*args, *kwargs)
-        ads: list[Ad] = self.get_queryset()
+    def get(self, request, *args, **kwargs):
+        super().get(request, *args, *kwargs)
+        page_number = request.GET.get("page")
+        paginator = Paginator(self.object_list, settings.ADS_ON_PAGE)
+        page = paginator.get_page(page_number)
+
         response = []
-        for ad in ads:
+        for ad in page:
             response.append({
-                "id": ad.pk,
+                "id": ad.id,
                 "name": ad.name,
-                "author": ad.author,
+                "author_id": ad.author_id,
+                "author": ad.author.first_name,
                 "price": ad.price,
+                "description": ad.description,
+                "is_published": ad.is_published,
+                "category_id": ad.category_id,
+                "image": ad.image.url if ad.image else None,
             })
 
-        return JsonResponse(response, safe=False)
+        return JsonResponse({
+            "items": response,
+            "total": paginator.count,
+            "num_pages": paginator.num_pages,
+        })
 
 
 @method_decorator(csrf_exempt, name='dispatch')
 class AdDetailView(DetailView):
     model = Ad
+    queryset = Ad.objects.select_related("author")
 
     def get(self, *args, **kwargs):
         super().get(*args, **kwargs)
-        ad: Ad = self.get_object()
+        ad: Ad = self.object
 
         return JsonResponse({
-            "id": ad.pk,
+            "id": ad.id,
             "name": ad.name,
-            "author": ad.author,
+            "author_id": ad.author_id,
+            "author": ad.author.first_name,
             "price": ad.price,
             "description": ad.description,
-            "address": ad.address,
             "is_published": ad.is_published,
+            "category_id": ad.category_id,
+            "image": ad.image.url if ad.image else None,
         })
 
 
 @method_decorator(csrf_exempt, name='dispatch')
 class AdCreateView(CreateView):
     model = Ad
-    fields = ["name", "author", "price", "description", "address", "is_published"]
+    fields = ["name", "author_id", "price", "description", "is_published", "category_id", ]
 
     def post(self, request, *args, **kwargs):
         ad_data = json.loads(request.body)
 
         ad = Ad()
         ad.name = ad_data.get("name")
-        ad.author = ad_data.get("author")
+        ad.author_id = ad_data.get("author_id")
         ad.price = ad_data.get("price")
         ad.description = ad_data.get("description")
-        ad.address = ad_data.get("address")
         ad.is_published = ad_data.get("is_published")
+        ad.category_id = ad_data.get("category_id")
 
         try:
             ad.full_clean()
         except ValidationError as error:
-            return JsonResponse({"error": error.error_dict()}, status=422)
+            return JsonResponse({"error": error.messages}, status=422)
 
         ad.save()
 
+        location_header = reverse("ad-detail", kwargs={"pk": ad.id})
         return JsonResponse({
-            "id": ad.pk,
+            "id": ad.id,
             "name": ad.name,
-            "author": ad.author,
+            "author_id": ad.author_id,
             "price": ad.price,
             "description": ad.description,
-            "address": ad.address,
-            "is_published": ad.is_published,
+            "category_id": ad.category_id,
+        }, status=201, headers={"Location": location_header})
+
+
+@method_decorator(csrf_exempt, name='dispatch')
+class AdUpdateView(UpdateView):
+    model = Ad
+    fields = ["name", "author", "price", "description", "category", ]
+    updatable_fields = ["name", "author_id", "price", "description", "category_id", ]
+
+    def patch(self, request, *args, **kwargs):
+        super().post(request, *args, **kwargs)
+        ad_data = json.loads(request.body)
+
+        for field in self.updatable_fields:
+            if field not in ad_data:
+                continue
+            setattr(self.object, field, ad_data[field])
+
+        try:
+            self.object.full_clean()
+        except ValidationError as error:
+            return JsonResponse({"error": error.messages}, status=422)
+
+        self.object.save()
+
+        return JsonResponse({
+            "id": self.object.id,
+            "name": self.object.name,
+            "author_id": self.object.author_id,
+            "author": self.object.author.first_name,
+            "price": self.object.price,
+            "description": self.object.description,
+            "is_published": self.object.is_published,
+            "category_id": self.object.category_id,
+            "image": self.object.image.url if self.object.image else None,
         })
+
+
+@method_decorator(csrf_exempt, name='dispatch')
+class AdDeleteView(DeleteView):
+    model = Ad
+    success_url = "/"
+
+    def delete(self, request, *args, **kwargs):
+        super().delete(request, *args, **kwargs)
+
+        return JsonResponse({"status": "ok"}, status=200)
+
+
+@method_decorator(csrf_exempt, name='dispatch')
+class AdUploadView(UpdateView):
+    model = Ad
+    fields = ["image", ]
+    success_url = "/"
+
+    def post(self, request, *args, **kwargs):
+        super().post(request, *args, **kwargs)
+        self.object.image = request.FILES["image"]
+
+        try:
+            self.object.full_clean()
+        except ValidationError as error:
+            return JsonResponse({"error": error.messages}, status=422)
+
+        self.object.save()
+
+        return JsonResponse({
+            "id": self.object.id,
+            "name": self.object.name,
+            "author_id": self.object.author_id,
+            "author": self.object.author.first_name,
+            "price": self.object.price,
+            "description": self.object.description,
+            "is_published": self.object.is_published,
+            "category_id": self.object.category_id,
+            "image": self.object.image.url if self.object.image else None,
+        }, status=201, headers={"Location": self.object.image.url})
