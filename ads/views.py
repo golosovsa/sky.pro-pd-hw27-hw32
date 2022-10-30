@@ -8,6 +8,8 @@ from django.utils.decorators import method_decorator
 from django.core.exceptions import ValidationError
 from django.core.paginator import Paginator
 from django.urls import reverse
+from django.db.models import Q
+
 
 from zavito import settings
 from ads.models import Ad
@@ -20,8 +22,28 @@ class AdListView(ListView):
 
     def get(self, request, *args, **kwargs):
         super().get(request, *args, *kwargs)
+        query = self.object_list
+
         page_number = request.GET.get("page")
-        paginator = Paginator(self.object_list, settings.ADS_ON_PAGE)
+        category_id: str = request.GET.get("cat")
+        name_contains_text = request.GET.get("text")
+        location_name_contains_text = request.GET.get("location")
+        price_from = request.GET.get("price_from")
+        price_to = request.GET.get("price_to")
+
+        if category_id and category_id.isdigit():
+            query = query.filter(category_id=category_id)
+
+        if name_contains_text:
+            query = query.filter(name__icontains=name_contains_text)
+
+        if location_name_contains_text:
+            query = query.filter(author__locations__name__icontains=location_name_contains_text)
+
+        if price_from and price_to and price_from.isdigit() and price_to.isdigit():
+            query = query.filter(Q(price__gte=price_from) & Q(price__lte=price_to))
+
+        paginator = Paginator(query, settings.ADS_ON_PAGE)
         page = paginator.get_page(page_number)
 
         response = []

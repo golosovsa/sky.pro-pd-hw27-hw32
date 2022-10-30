@@ -4,9 +4,9 @@ from users import views
 
 
 urlpatterns = [
-    path("user/", views.UserListView.as_view(), name="user-list"),
-    path("user/create/", views.UserCreateView.as_view(), name="user-create"),
-    path("user/<int:pk>/", views.UserDetailView.as_view(), name="user-detail"),
-    path("user/<int:pk>/update/", views.UserUpdateView.as_view(), name="user-update"),
-    path("user/<int:pk>/delete/", views.UserDeleteView.as_view(), name="user-delete"),
+    path("user/", views.UserListApiView.as_view(), name="user-list"),
+    path("user/create/", views.UserCreateAPIView.as_view(), name="user-create"),
+    path("user/<int:pk>/", views.UserRetrieveAPIView.as_view(), name="user-detail"),
+    path("user/<int:pk>/update/", views.UserUpdateAPIView.as_view(), name="user-update"),
+    path("user/<int:pk>/delete/", views.UserDestroyAPIView.as_view(), name="user-delete"),
 ]

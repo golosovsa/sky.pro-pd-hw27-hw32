@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    "rest_framework",
     "hello",
     "categories",
     "locations",
@@ -147,6 +148,11 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 USERS_ON_PAGE = 10
 ADS_ON_PAGE = 10
+
+REST_FRAMEWORK = {
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    "PAGE_SIZE": 10,
+}
 
 LOGGING = {
     'version': 1,
