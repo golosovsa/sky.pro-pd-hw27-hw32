@@ -17,6 +17,11 @@
 [cheat sheet 29.2](https://skyengpublic.notion.site/29-2-68274bd0efb44810961990feea4127dd)\
 [source](https://skyengpublic.notion.site/29-cb3e0ac9277740638a27d076fd984ec3)
 
+## Homework №30
+
+[cheat sheet 30.1](https://skyengpublic.notion.site/30-1-d3d2fac0517b485aaed2721bbf5f92dc)\
+[cheat sheet 30.2](https://skyengpublic.notion.site/30-2-32665565288645199ccdd321e990e538)\
+[source](https://skyengpublic.notion.site/30-925d9049c08f4a79a97d28c32713b6ce)
 
 ## Project devs settings
 
@@ -46,4 +51,12 @@
 - [x] Install DRF
 - [x] Generic views for user
 - [x] Base view set for location
-- [x] filters for ads
+- [x] Filters for ads
+
+| hw27                                                                                                                                                                                            | hw28                                                                                                                                                                                                                                                                            |
+|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| <ul><li>- [x] Initial</li><li>- [x] Install and setup poetry</li><li>- [x] Create models</li><li>- [x] Load fixtures</li><li>- [x] Create views</li><li>- [x] Test hw27 with Postman </li></ul> | <ul><li>- [x] PostgreSQL</li><li>- [x] New models</li><li>- [x] Django admin and verbal names</li><li>- [x] Media rout and pictures</li><li>- [x] CRUD for all</li><li>- [x] Upload image</li><li>- [x] Pagination</li><li>- [x] Ordering</li><li>- [x] Extra fields</li></ul>  |
+
+| hw29 |
+|---|
+| <ul><li>- [x] Install DRF</li><li>- [x] Generic views for user</li><li>- [x] Base view set for location</li><li>- [x] Filters for ads</li></ul>
