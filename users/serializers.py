@@ -1,5 +1,4 @@
 from rest_framework.serializers import ModelSerializer, SlugRelatedField, CharField
-from django.contrib.auth.hashers import make_password
 
 from locations.models import Location
 from users.models import User
@@ -8,7 +7,7 @@ from users.models import User
 class UserModelSerializer(ModelSerializer):
     class Meta:
         model = User
-        fields = "__all__"
+        fields = ["first_name", "last_name", "username", "password", "role", "age", "locations"]
 
     locations = SlugRelatedField(
         many=True,
@@ -22,7 +21,3 @@ class UserModelSerializer(ModelSerializer):
         write_only=True,
         required=True,
     )
-
-    def create(self, validated_data):
-        validated_data["password"] = make_password(validated_data["password"])
-        return super().create(validated_data)

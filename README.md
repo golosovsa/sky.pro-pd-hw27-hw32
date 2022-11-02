@@ -57,6 +57,6 @@
 |-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | <ul><li>- [x] Initial</li><li>- [x] Install and setup poetry</li><li>- [x] Create models</li><li>- [x] Load fixtures</li><li>- [x] Create views</li><li>- [x] Test hw27 with Postman </li></ul> | <ul><li>- [x] PostgreSQL</li><li>- [x] New models</li><li>- [x] Django admin and verbal names</li><li>- [x] Media rout and pictures</li><li>- [x] CRUD for all</li><li>- [x] Upload image</li><li>- [x] Pagination</li><li>- [x] Ordering</li><li>- [x] Extra fields</li></ul>  |
 
-| hw29 |
-|---|
-| <ul><li>- [x] Install DRF</li><li>- [x] Generic views for user</li><li>- [x] Base view set for location</li><li>- [x] Filters for ads</li></ul>
+| hw29                                                                                                                                            | hw30                                                              |
+|-------------------------------------------------------------------------------------------------------------------------------------------------|-------------------------------------------------------------------|
+| <ul><li>- [x] Install DRF</li><li>- [x] Generic views for user</li><li>- [x] Base view set for location</li><li>- [x] Filters for ads</li></ul> | <ul><li>- [x] user model is inherited from AbstractUser</li></ul> |

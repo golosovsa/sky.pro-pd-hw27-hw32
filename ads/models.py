@@ -6,7 +6,7 @@ from users.models import User
 
 
 class Ad(models.Model):
-    name = models.CharField(max_length=100, verbose_name="Заготовок")
+    name = models.CharField(max_length=100, verbose_name="Заголовок")
     author = models.ForeignKey(User, on_delete=models.CASCADE, related_name="ads", verbose_name="Автор")
     price = models.PositiveIntegerField(verbose_name="Цена")
     description = models.CharField(max_length=1000, verbose_name="Описание")

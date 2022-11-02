@@ -1,14 +1,18 @@
 from django.db import models
+from django.contrib.auth.models import AbstractUser
 
 from locations.models import Location
 
 
-class User(models.Model):
+class User(AbstractUser):
+    MEMBER = "member"
+    MODERATOR = "moderator"
+    ADMIN = "admin"
 
     ROLES = (
-        ("member", "участник"),
-        ("moderator", "модератор"),
-        ("admin", "администратор"),
+        (MEMBER, "участник"),
+        (MODERATOR, "модератор"),
+        (ADMIN, "администратор"),
     )
 
     first_name = models.CharField(max_length=20, verbose_name="Имя")
@@ -26,3 +30,7 @@ class User(models.Model):
 
     def __str__(self):
         return self.username
+
+    def save(self, *args, **kwargs):
+        self.set_password(self.password)
+        return super().save(*args, **kwargs)
