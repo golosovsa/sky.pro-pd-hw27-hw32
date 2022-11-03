@@ -33,30 +33,11 @@
 
 ## Project status
 
-- [x] Initial
-- [x] Install and setup poetry
-- [x] Create models
-- [x] Load fixtures
-- [x] Create views
-- [x] Test hw27 with Postman 
-- [x] PostgreSQL
-- [x] New models
-- [x] Django admin and verbal names
-- [x] Media rout and pictures
-- [x] CRUD for all
-- [x] Upload image
-- [x] Pagination
-- [x] Ordering
-- [x] Extra fields
-- [x] Install DRF
-- [x] Generic views for user
-- [x] Base view set for location
-- [x] Filters for ads
 
 | hw27                                                                                                                                                                                            | hw28                                                                                                                                                                                                                                                                            |
 |-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | <ul><li>- [x] Initial</li><li>- [x] Install and setup poetry</li><li>- [x] Create models</li><li>- [x] Load fixtures</li><li>- [x] Create views</li><li>- [x] Test hw27 with Postman </li></ul> | <ul><li>- [x] PostgreSQL</li><li>- [x] New models</li><li>- [x] Django admin and verbal names</li><li>- [x] Media rout and pictures</li><li>- [x] CRUD for all</li><li>- [x] Upload image</li><li>- [x] Pagination</li><li>- [x] Ordering</li><li>- [x] Extra fields</li></ul>  |
 
-| hw29                                                                                                                                            | hw30                                                              |
-|-------------------------------------------------------------------------------------------------------------------------------------------------|-------------------------------------------------------------------|
-| <ul><li>- [x] Install DRF</li><li>- [x] Generic views for user</li><li>- [x] Base view set for location</li><li>- [x] Filters for ads</li></ul> | <ul><li>- [x] user model is inherited from AbstractUser</li></ul> |
+| hw29                                                                                                                                            | hw30                                                                                                                                                                                    |
+|-------------------------------------------------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| <ul><li>- [x] Install DRF</li><li>- [x] Generic views for user</li><li>- [x] Base view set for location</li><li>- [x] Filters for ads</li></ul> | <ul><li>- [x] user model is inherited from AbstractUser</li><li>- [x] handlers for auth and refresh token</li><li>- [x] set up permissions</li><li>- [x] create ad selections</li></ul> |

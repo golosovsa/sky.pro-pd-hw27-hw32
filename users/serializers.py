@@ -21,3 +21,9 @@ class UserModelSerializer(ModelSerializer):
         write_only=True,
         required=True,
     )
+
+    def save(self, **kwargs):
+        user = super().save(**kwargs)
+        user.set_password(user.password)
+        user.save()
+        return user

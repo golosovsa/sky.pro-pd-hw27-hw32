@@ -24,4 +24,5 @@ urlpatterns = [
     path("", include("locations.urls")),
     path("", include("users.urls")),
     path("", include("ads.urls")),
+    path("", include("selections.urls")),
 ]

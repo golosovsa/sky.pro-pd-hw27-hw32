@@ -7,6 +7,12 @@ from rest_framework.serializers import \
 from ads.models import Ad
 
 
+class AdModelDefaultSerializer(ModelSerializer):
+    class Meta:
+        model = Ad
+        fields = "__all__"
+
+
 class AdModelSerializerForSafeMethods(ModelSerializer):
     author = SlugRelatedField(
         many=False,

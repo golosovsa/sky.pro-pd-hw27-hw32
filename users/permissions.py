@@ -35,6 +35,8 @@ class UserModeratorAndAdminCanWriteOrReadOnly(permissions.BasePermission):
     message = "Only for moderators or admins"
 
     def has_permission(self, request, view):
+        if request.user.is_anonymous:
+            return False
         if request.method in permissions.SAFE_METHODS:
             return True
         return request.user.role in [User.MODERATOR, User.ADMIN]
